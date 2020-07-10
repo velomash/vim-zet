@@ -2,11 +2,14 @@
 " Author:   Adam Trimble
 " Version:  0.1
 
-
-
 " UTIL FUNCTIONS
 function! zet#get_todays_date()
   return strftime('%Y-%m-%d')
+endfunction
+
+function! zet#get_todays_note_id()
+  let todaysDate = zet#get_todays_date()
+  return todaysDate . "-0"
 endfunction
 
 function! zet#get_todays_note_ids()
@@ -30,6 +33,7 @@ endfunction
 
 " NOTE FUNCTIONS
 function! zet#open_today()
+  call zet#open_file("edit", zet#get_full_path(zet#get_todays_note_id()))
 endfunction
 function! zet#search_notes()
 endfunction
