@@ -31,10 +31,16 @@ function! zet#get_next_note_id()
   return todaysDate . "-" len(todaysNoteIds)
 endfunction
 
+function! zet#get_full_path(note_id)
+  return g:zet_folder.note_id.g:zet_file_extension
+endfunction
+
 " NOTE FUNCTIONS
 function! zet#open_today()
-  call zet#open_file("edit", zet#get_full_path(zet#get_todays_note_id()))
+  let todaysNoteId = zet#get_todays_note_id()
+  call zet#open_file("edit", zet#get_full_path(todaysNoteId))
 endfunction
+
 function! zet#search_notes()
 endfunction
 function! zet#search_backlinks()

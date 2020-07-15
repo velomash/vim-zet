@@ -1,4 +1,4 @@
-" zet.vim - The best way to take notes in vim
+" zet.vim - Power your Zettelkasten with vim
 " Maintainer: Adam Trimble
 " Version: 0.1
 
@@ -25,4 +25,10 @@ endif
 
 if exists('g:zet_folder') == 0
   echom "You must define g:zet_folder for vim-zet to work properly"
+endif
+
+if exists('g:zet_file_extension') == 0
+  let g:zet_file_extension = '.md'
+elseif g:zet_file_extension[0] != '.'
+  let g:zet_file_extension = '.' . g:zet_file_extension
 endif
