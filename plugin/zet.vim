@@ -25,6 +25,8 @@ endif
 
 if exists('g:zet_folder') == 0
   echom "You must define g:zet_folder for vim-zet to work properly"
+elseif g:zet_folder[len(g:zet_folder) - 1] != '/'
+  let g:zet_folder = g:zet_folder . '/'
 endif
 
 if exists('g:zet_file_extension') == 0
