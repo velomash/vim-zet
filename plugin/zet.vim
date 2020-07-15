@@ -15,12 +15,12 @@ command! ZetSearchNotes call zet#search_notes()
 command! ZetSearchBackLinks call zet#search_backlinks()
 
 if exists('g:zet_user_mapping') == 0
-  nnoremap <Leader>nl :ZetCreateLink<cr>
-  nnoremap <Leader>nn :ZetCreateNote<cr>
-  nnoremap <Leader>no :ZetOpenLink<cr>
-  nnoremap <Leader>nt :ZetOpenToday<cr>
-  nnoremap <Leader>ns :ZetSearchNotes<cr>
-  nnoremap <Leader>nb :ZetSearchBackLinks<cr>
+  nnoremap <Leader>zl :ZetCreateLink<cr>
+  nnoremap <Leader>zn :ZetCreateNote<cr>
+  nnoremap <Leader>zo :ZetOpenLink<cr>
+  nnoremap <Leader>z<Leader> :ZetOpenToday<cr>
+  nnoremap <Leader>zs :ZetSearchNotes<cr>
+  nnoremap <Leader>zb :ZetSearchBackLinks<cr>
 endif
 
 if exists('g:zet_folder') == 0
