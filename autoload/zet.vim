@@ -32,7 +32,7 @@ function! zet#get_next_note_id()
 endfunction
 
 function! zet#get_full_path(note_id)
-  return g:zet_folder.note_id.g:zet_file_extension
+  return g:zet_folder . a:note_id . g:zet_file_extension
 endfunction
 
 " NOTE FUNCTIONS
@@ -366,4 +366,3 @@ endfunction
 function! zet#create_empty_link(cmd)
   call zet#run_fzf(zet#notes_content(), a:cmd, 2)
 endfunction
-
