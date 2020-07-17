@@ -35,15 +35,27 @@ function! zet#get_full_path(note_id)
   return g:zet_folder . a:note_id . g:zet_file_extension
 endfunction
 
+function! zet#get_current_note_date()
+  let currentNoteId = expand('%:t:r')
+  let v:errors = []
+  assert_match('^\d\{4}-\d\{2}-\d\+', currentNoteId)
+  if len(v:errors) == 0
+  endif
+  echo v:errors
+endfunction
+
 " NOTE FUNCTIONS
 function! zet#open_today()
   let todaysNoteId = zet#get_todays_note_id()
   call zet#open_file("edit", zet#get_full_path(todaysNoteId))
 endfunction
 
-function! zet#search_notes()
+function! zet#open_next_day()
+  let dateOfNote = zet#get_current_note_date()
 endfunction
-function! zet#search_backlinks()
+
+function! zet#open_previous_day()
+  let dateOfNote = zet#get_current_note_date()
 endfunction
 
 " --- LINK FUNCTIONS --------------------------------------------------------
