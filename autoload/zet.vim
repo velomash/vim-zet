@@ -37,11 +37,9 @@ endfunction
 
 function! zet#get_current_note_date()
   let currentNoteId = expand('%:t:r')
-  let v:errors = []
-  assert_match('^\d\{4}-\d\{2}-\d\+', currentNoteId)
-  if len(v:errors) == 0
+  " going to need to send this to the system for date manipulation
+  if matchstr('^\d\{4}-\d\{2}-\d\+', currentNoteId)
   endif
-  echo v:errors
 endfunction
 
 " NOTE FUNCTIONS
