@@ -46,7 +46,7 @@ function! zet#get_sibling_daily_note(offset)
   for i in range(0, len(filenames) -1)
     if matchstr(filenames[i], refNoteId)
       let refIndex = i
-      return filenames[i + offset]
+      return filenames[i + a:offset]
     endif
   endfor
   return filenames[len(filenames) - 1]
