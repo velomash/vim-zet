@@ -18,7 +18,7 @@ endfunction
 function! zet#get_todays_note_ids()
   let note_ids = []
   let filenames = system("ls -1 " . g:zet_folder . "grep " . zet#get_todays_date())
-  let filenames = split(filenames, "/n")
+  let filenames = split(filenames, "\n")
   for i in range(0, len(filenames) -1)
     if fnamemodify(filenames[i], ":e") === g:zet_file_extension[1:-1]
       let root = fnamemodify(filenames[i], ":r")
@@ -38,18 +38,24 @@ function! zet#get_full_path(note_id)
   return g:zet_folder . a:note_id . g:zet_file_extension
 endfunction
 
-function! zet#get_sibling_daily_note(offset)
+function! zet#get_sibling_daily_note_id(offset)
   let refNoteId = zet#get_current_note_date() . '-0'
   let daily_note_ids = []
   let filenames = system('ls -1 ' . g:zet_folder . ' | grep "\-0' . g:zet_file_extension . '"')
-  let filenames = split(filenames, "/n")
+  let filenames = split(filenames, "\n")
   for i in range(0, len(filenames) -1)
     if matchstr(filenames[i], refNoteId)
-      let refIndex = i
-      return filenames[i + offset]
+      let target = a:offset + i
+      while target >= len(filenames)
+        let target = target - len(filenames)
+      endwhile
+      while target < 0
+        let target = target + len(filenames)
+      endwhile
+      return substitute(filenames[target], g:zet_file_extension, '', '')
     endif
   endfor
-  return filenames[len(filenames) - 1]
+  return substitute(filenames[len(filenames) - 1], g:zet_file_extension, '', '')
 endfunction
 
 function! zet#get_current_note_date()
@@ -64,12 +70,12 @@ function! zet#open_today()
 endfunction
 
 function! zet#open_previous_day()
-  let nextDayId = zet#get_sibling_daily_note(-1)
-  call zet#open_file("edit", zet#get_full_path(nextDayId))
+  let prevDayId = zet#get_sibling_daily_note_id(-1)
+  call zet#open_file("edit", zet#get_full_path(prevDayId))
 endfunction
 
 function! zet#open_next_day()
-  let nextDayId = zet#get_sibling_daily_note(1)
+  let nextDayId = zet#get_sibling_daily_note_id(1)
   call zet#open_file("edit", zet#get_full_path(nextDayId))
 endfunction
 
