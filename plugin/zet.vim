@@ -7,24 +7,16 @@ if exists('g:zet_loaded')
 endif
 let g:zet_loaded = 1
 
-"command! ZetCreateLink call zet#create_link()
-"command! ZetCreateNote call zet#create_note()
-"command! ZetOpenLink call zet#open_link()
-command! ZetOpenToday call zet#open_today()
-command! ZetOpenPreviousDay call zet#open_previous_day()
+command! ZetNewNote call zet#create_note()
 command! ZetOpenNextDay call zet#open_next_day()
-"command! ZetSearchNotes call zet#search_notes()
-"command! ZetSearchBackLinks call zet#search_backlinks()
+command! ZetOpenPreviousDay call zet#open_previous_day()
+command! ZetOpenToday call zet#open_today()
 
 if exists('g:zet_user_mapping') == 0
-  "nnoremap <Leader>zl :ZetCreateLink<cr>
-  "nnoremap <Leader>zn :ZetCreateNote<cr>
-  "nnoremap <Leader>zo :ZetOpenLink<cr>
   nnoremap <Leader>z<Leader> :ZetOpenToday<cr>
-  nnoremap <Leader>zk :ZetOpenNextDay<cr>
   nnoremap <Leader>zj :ZetOpenPreviousDay<cr>
-  "nnoremap <Leader>zs :ZetSearchNotes<cr>
-  "nnoremap <Leader>zb :ZetSearchBackLinks<cr>
+  nnoremap <Leader>zk :ZetOpenNextDay<cr>
+  nnoremap <Leader>zn :ZetNewNote<cr>
 endif
 
 if exists('g:zet_folder') == 0

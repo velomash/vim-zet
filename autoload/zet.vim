@@ -2,6 +2,9 @@
 " Author:   Adam Trimble
 " Version:  0.1
 
+let s:note_date_pattern = '^\d\{4}-\d\{2}-\d\{1,2}'
+let s:note_id_pattern = '^\d\{4}-\d\{2}-\d\{1,2}-\d\+'
+
 " UTIL FUNCTIONS
 function! zet#get_todays_date()
   return strftime('%Y-%m-%d')
@@ -35,11 +38,23 @@ function! zet#get_full_path(note_id)
   return g:zet_folder . a:note_id . g:zet_file_extension
 endfunction
 
+function! zet#get_sibling_daily_note(offset)
+  let refNoteId = zet#get_current_note_date() . '-0'
+  let daily_note_ids = []
+  let filenames = system('ls -1 ' . g:zet_folder . ' | grep "\-0' . g:zet_file_extension . '"')
+  let filenames = split(filenames, "/n")
+  for i in range(0, len(filenames) -1)
+    if matchstr(filenames[i], refNoteId)
+      let refIndex = i
+      return filenames[i + offset]
+    endif
+  endfor
+  return filenames[len(filenames) - 1]
+endfunction
+
 function! zet#get_current_note_date()
   let currentNoteId = expand('%:t:r')
-  " going to need to send this to the system for date manipulation
-  if matchstr('^\d\{4}-\d\{2}-\d\+', currentNoteId)
-  endif
+  return matchstr(currentNoteId, s:note_date_pattern)
 endfunction
 
 " NOTE FUNCTIONS
@@ -48,13 +63,16 @@ function! zet#open_today()
   call zet#open_file("edit", zet#get_full_path(todaysNoteId))
 endfunction
 
-function! zet#open_next_day()
-  let dateOfNote = zet#get_current_note_date()
+function! zet#open_previous_day()
+  let nextDayId = zet#get_sibling_daily_note(-1)
+  call zet#open_file("edit", zet#get_full_path(nextDayId))
 endfunction
 
-function! zet#open_previous_day()
-  let dateOfNote = zet#get_current_note_date()
+function! zet#open_next_day()
+  let nextDayId = zet#get_sibling_daily_note(1)
+  call zet#open_file("edit", zet#get_full_path(nextDayId))
 endfunction
+
 
 " --- LINK FUNCTIONS --------------------------------------------------------
 
@@ -135,12 +153,6 @@ function! zet#open_link(cmd)
     endif
   endif
 endfunction
-
-" Open or create the index file (always note 0)
-function! zet#open_index(cmd)
-  call zet#open_file(a:cmd, zet#get_full_path("/0"))
-endfunction
-
 
 " --- SEARCH FUNCTIONS -------------------------------------------------------
 
@@ -375,4 +387,25 @@ endfunction
 " Create link without text to a note (selected through search or new)
 function! zet#create_empty_link(cmd)
   call zet#run_fzf(zet#notes_content(), a:cmd, 2)
+endfunction
+
+" Return the list of IDs matching the notes in the note folder
+function! notoire#get_id_existing_notes()
+  let note_ids = []
+
+  let filenames = system("ls -1 " . g:current_notoire_folder)
+  let filenames = split(filenames, "\n")
+
+  " check the filename is indeed a note and if yes keep only the id
+  for i in range(0, len(filenames) - 1)
+    if fnamemodify(filenames[i], ":e") == g:notoire_file_extension[1:-1]
+      let root = fnamemodify(filenames[i], ":r")
+      let match_hex = matchstr(root, '\x\+')
+      if len(match_hex) == len(root)
+        call add(note_ids, root)
+      endif
+    endif
+  endfor
+
+  return note_ids
 endfunction
