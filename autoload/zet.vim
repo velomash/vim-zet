@@ -390,7 +390,7 @@ function! zet#create_empty_link(cmd)
 endfunction
 
 " Return the list of IDs matching the notes in the note folder
-function! notoire#get_id_existing_notes()
+function! zet#get_id_existing_notes()
   let note_ids = []
 
   let filenames = system("ls -1 " . g:current_notoire_folder)
