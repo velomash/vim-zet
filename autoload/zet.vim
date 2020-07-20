@@ -290,10 +290,11 @@ function! zet#process_fzf_choice(cmd, link_creation, e)
   " if we choose to create a link with visual selection
   if a:link_creation == 1
     echom "about to execute in visual"
-    exe "normal! \ei[\e`>la](" . note_id . ")\e"
+    exe "normal! \ei[\e`>la](./" . note_id . g:zet_file_extension . ")\e"
   " if we choose to create a link without visual selection
   elseif a:link_creation == 2
-    exe "normal! \ei[](" . note_id . ")\eF]"
+    let title = matchstr(a:e, 'title: .\{-}\n')[7:-2]
+    exe "normal! \ei[" . title . "](" . note_id . g:zet_file_extension . ")\eF]"
   endif
 
   call zet#open_file(a:cmd, g:zet_folder."/".note_id.g:zet_file_extension)
@@ -399,17 +400,14 @@ endfunction
 function! zet#get_id_existing_notes()
   let note_ids = []
 
-  let filenames = system("ls -1 " . g:current_notoire_folder)
+  let filenames = system("ls -1 " . g:zet_folder)
   let filenames = split(filenames, "\n")
 
   " check the filename is indeed a note and if yes keep only the id
   for i in range(0, len(filenames) - 1)
-    if fnamemodify(filenames[i], ":e") == g:notoire_file_extension[1:-1]
+    if matchstr(filenames[i], s:note_id_pattern)
       let root = fnamemodify(filenames[i], ":r")
-      let match_hex = matchstr(root, '\x\+')
-      if len(match_hex) == len(root)
-        call add(note_ids, root)
-      endif
+      call add(note_ids, root)
     endif
   endfor
 

@@ -7,6 +7,8 @@ if exists('g:zet_loaded')
 endif
 let g:zet_loaded = 1
 
+command! ZetCreateEmptyLink call zet#create_empty_link("vsplit")
+command! -range ZetCreateLink call zet#create_link("vsplit")
 command! ZetNewNote call zet#create_note()
 command! ZetOpenNextDay call zet#open_next_day()
 command! ZetOpenPreviousDay call zet#open_previous_day()
@@ -16,6 +18,8 @@ if exists('g:zet_user_mapping') == 0
   nnoremap <Leader>z<Leader> :ZetOpenToday<cr>
   nnoremap <Leader>zj :ZetOpenPreviousDay<cr>
   nnoremap <Leader>zk :ZetOpenNextDay<cr>
+  nnoremap <Leader>zl :ZetCreateEmptyLink<cr>
+  vnoremap L :ZetCreateLink<cr>
   nnoremap <Leader>zn :ZetNewNote<cr>
 endif
 
